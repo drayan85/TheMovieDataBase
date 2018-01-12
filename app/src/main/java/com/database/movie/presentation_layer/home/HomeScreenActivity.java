@@ -44,6 +44,8 @@ public class HomeScreenActivity extends BaseActivity {
         setContentView(R.layout.activity_home_screen);
 
         onViewReady(savedInstanceState, getIntent());
+
+        showHamburger();
     }
 
     @Override
