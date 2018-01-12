@@ -32,7 +32,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
 import com.database.movie.BuildConfig;
-import com.database.movie.utils.JsonFormatHttLogging;
+import com.database.movie.utils.JsonFormatHttpLogging;
 
 import java.io.InputStream;
 
@@ -70,7 +70,7 @@ public class TheMovieDBGlideModule extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new JsonFormatHttLogging())
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new JsonFormatHttpLogging())
                 .setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder =  new OkHttpClient.Builder();
         if(BuildConfig.DEBUG) {
