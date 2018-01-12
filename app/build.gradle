@@ -1,0 +1,170 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        applicationId "com.database.movie"
+        vectorDrawables.useSupportLibrary = true
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+
+        // Always show the result of every unit test, even if it passes.
+        unitTests.all {
+            testLogging {
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            }
+        }
+    }
+
+    buildTypes {
+
+        denug {
+            // Run code coverage reports by default on debug builds.
+            testCoverageEnabled = true
+
+            //DATABASE BROWSER PORT NUMBER
+            resValue("string", "PORT_NUMBER", "8081")
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:27.0.2'
+    }
+    //display more than 100 errors
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xmaxerrs" << "500" // or whatever number you want
+        }
+    }
+}
+
+configurations {
+    provided {
+        dependencies.all {dep ->
+            configurations.default.exclude group: dep.group, module:dep.name
+        }
+    }
+    compile.extendsFrom provided
+    //compile.exclude module: 'appcompat-v7'
+}
+
+
+ext{
+    SUPPORT_LIB_VERSION = "27.0.2"
+    DAGGER_VERSION = "2.11"
+    OKHTTP_VERSION = "3.9.0"
+    RETROFIT_VERSION = "2.3.0"
+    GSON_VERSION = "2.8.2"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    implementation "com.google.code.gson:gson:${GSON_VERSION}"
+
+    //Dependency Injection
+    implementation "com.google.dagger:dagger:${DAGGER_VERSION}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${DAGGER_VERSION}"
+
+    //RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.8'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    implementation "com.android.support:support-v4:${SUPPORT_LIB_VERSION}"
+    //implementation "com.android.support:design:${SUPPORT_LIB_VERSION}"
+    implementation "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
+    implementation "com.android.support:recyclerview-v7:${SUPPORT_LIB_VERSION}"
+    //implementation "com.android.support:cardview-v7:${SUPPORT_LIB_VERSION}"
+    //implementation "com.android.support:palette-v7:${SUPPORT_LIB_VERSION}"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    //GLIDE LIBRARY
+    compile 'com.github.bumptech.glide:glide:4.1.1'
+    compile 'com.github.bumptech.glide:annotations:4.1.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
+    compile ('com.github.bumptech.glide:okhttp3-integration:4.1.1'){
+        exclude group: 'glide-parent'
+        exclude group: 'com.android.support'
+    }
+
+    //SQUARE LIBRARIES
+    compile "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+    compile "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
+    compile "com.squareup.retrofit2:retrofit:${RETROFIT_VERSION}"
+    compile "com.squareup.retrofit2:converter-gson:${RETROFIT_VERSION}"
+    compile "com.squareup.retrofit2:adapter-rxjava2:${RETROFIT_VERSION}"
+    compile 'com.squareup.okio:okio:1.13.0'
+
+
+    //TO SEE SQLite TABLES IN THE BROWSER
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
+
+    //MEMORY LEAK LIBRARY (LeakCanary)
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
+    //releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
+
+    //FACEBOOK STETHO DEBUG BRIDGE
+    debugCompile 'com.facebook.stetho:stetho:1.5.0'
+    //compile 'com.facebook.stetho:stetho-urlconnection:1.5.0'
+    debugCompile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+    debugCompile 'com.facebook.stetho:stetho-js-rhino:1.5.0'
+
+
+    //calculate method execution time (https://github.com/drayan85/hugo)
+    //Unit Testing
+    testCompile "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.8.9'
+    testCompile 'org.powermock:powermock-module-junit4:1.7.3'
+    testCompile 'org.powermock:powermock-api-mockito2:1.7.3'
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+
+    // Android Testing Support Library's runner and rules (Instrumental Testing)
+    androidTestCompile "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
+    androidTestCompile 'com.android.support.test:rules:1.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+
+    // Optional -- Hamcrest library
+//    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
+
+    // Optional -- UI testing with Espresso
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-web:3.0.1'
+    //androidTestImplementation 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    androidTestImplementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.1'
+    // Optional -- Mockito framework
+    androidTestImplementation 'org.mockito:mockito-core:2.8.9'
+    // Optional -- UI testing with UI Automator
+    //androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
+
+    testImplementation 'junit:junit:4.12'
+    //
+
+}
