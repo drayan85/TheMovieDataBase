@@ -20,6 +20,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.database.movie.data_layer.database.entity.IMovie;
+import com.database.movie.data_layer.database.entity.INowPlayingMovie;
+
 import javax.inject.Singleton;
 
 /**
@@ -42,7 +45,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "db onCreate");
         //CREATE TABLES
+        db.execSQL(IMovie.CREATE_TABLE_MOVIES);
+        db.execSQL(INowPlayingMovie.CREATE_TABLE_NOW_PLAYING_MOVIES);
 
+        //CREATE INDICES
+        db.execSQL(IMovie.CREATE_MOVIES_INDEX_ID);
+        db.execSQL(INowPlayingMovie.CREATE_NOW_PLAYING_MOVIES_INDEX_ID);
     }
 
     @Override
@@ -59,10 +67,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void onClear(SQLiteDatabase db){
-
+        db.delete(IMovie.TABLE_NAME, null, null);
+        db.delete(INowPlayingMovie.TABLE_NAME, null, null);
     }
 
     private void dropTables(SQLiteDatabase db){
-
+        db.execSQL(IMovie.DROP_TABLE_QUERY);
+        db.execSQL(INowPlayingMovie.DROP_TABLE_QUERY);
     }
 }
