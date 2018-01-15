@@ -16,6 +16,8 @@
 package com.database.movie.utils;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -71,5 +73,36 @@ public class Utils {
         } else {
             return Character.toUpperCase(first) + s.substring(1);
         }
+    }
+
+
+    public static String getUserAgentString(Context context){
+        StringBuilder res = new StringBuilder(64);
+        res.append("Dalvik/");
+        res.append(System.getProperty("java.vm.version"));// such as 1.1.0
+        res.append(" (Linux; U; Android )");
+        res.append(Build.VERSION.RELEASE);//1.0
+        //add the model for the release build
+        if("REL".equals(Build.VERSION.CODENAME)){
+            if(Build.MODEL.length() > 0 ){
+                res.append("; ");
+                res.append(Build.VERSION.CODENAME);
+            }
+        }
+        // "MASTER" or "M4-rc20"
+        if(Build.ID.length() > 0 ){
+            res.append(" Build/");
+            res.append(Build.ID);
+        }
+        res.append(";" + Utils.getDeviceName());
+        res.append(")");
+        res.append(" TheMovieDB-Android/");
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            res.append(pInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return res.toString();
     }
 }
