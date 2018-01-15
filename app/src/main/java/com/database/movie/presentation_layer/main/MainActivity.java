@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.presentation_layer.home;
+package com.database.movie.presentation_layer.main;
 
 
 import android.content.Context;
@@ -35,28 +35,41 @@ import com.database.movie.BaseActivity;
 import com.database.movie.R;
 import com.database.movie.databinding.HomeScreenBinding;
 import com.database.movie.databinding.NavigationDrawerBinding;
+import com.database.movie.di.components.DaggerHomeScreenComponent;
+import com.database.movie.di.modules.ActivityModule;
+import com.database.movie.di.modules.HomeScreenViewModule;
+import com.database.movie.di.modules.NowPlayingMovieModule;
+import com.database.movie.presentation_layer.main.home.HomeScreenFragment;
+import com.database.movie.presentation_layer.main.home.HomeScreenPresenter;
+import com.database.movie.utils.ActivityUtils;
+
+import javax.inject.Inject;
 
 /**
  * @author Ilanthirayan Paramanathan <theebankala@gmail.com>
  * @version 1.0.0
  * @since 12th of January 2018
  */
-public class HomeScreenActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
 
     private static final long DRAWER_CLOSE_DELAY_MS = 250;
-    public static final String NAVIGATION_DRAWER_MENU_ITEM_ID = "navigation_drawer_menu_item_id";
 
     private HomeScreenBinding homeScreenBinding;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
 
+    private HomeScreenFragment mHomeFragment;
+
     private final Handler mDrawerActionHandler = new Handler();
     private ActionBarDrawerToggle mDrawerToggle;
 
+    @Inject
+    HomeScreenPresenter mPresenter;
+
     public static void start(Context context) {
-        Intent starter = new Intent(context, HomeScreenActivity.class);
+        Intent starter = new Intent(context, MainActivity.class);
         context.startActivity(starter);
     }
 
@@ -69,6 +82,8 @@ public class HomeScreenActivity extends BaseActivity implements NavigationView.O
         setNavigationDrawerViews();
 
         onViewReady(savedInstanceState, getIntent());
+
+        onClickNavigationDrawerMenuItem(R.id.nav_home);
     }
 
     private void setSupportActionBarView() {
@@ -89,24 +104,43 @@ public class HomeScreenActivity extends BaseActivity implements NavigationView.O
                 R.string.close);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mNavigationView.setNavigationItemSelectedListener(this);
-
     }
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         //initialise the HomeScreen Fragment to provide the Dagger HomeScreenModule constructor
-
+        if(mHomeFragment == null){
+            mHomeFragment = HomeScreenFragment.newInstance(this);
+        }
         super.onViewReady(savedInstanceState, intent);
+    }
+
+    private void onClickNavigationDrawerMenuItem(final int nav_menu_id){
+        switch(nav_menu_id){
+            default:
+              if(!mHomeFragment.isAdded()){
+                  ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), mHomeFragment, R.id.content_frame);
+              }
+        }
     }
 
     @Override
     protected void resolveDaggerDependency() {
-        //TODO Dagger Component Init
+        DaggerHomeScreenComponent
+                .builder()
+                .activityModule(new ActivityModule(this))
+                .applicationComponent(getApplicationComponent())
+                .homeScreenViewModule(new HomeScreenViewModule(mHomeFragment))
+                .nowPlayingMovieModule(new NowPlayingMovieModule())
+                .build()
+                .inject(this);
     }
 
     @Override
     protected void onDestroy() {
-        //TODO destroy presenter
+        if(mPresenter != null){
+            mPresenter.onDestroy();
+        }
         super.onDestroy();
     }
 
