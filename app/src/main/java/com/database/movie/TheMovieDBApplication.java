@@ -18,6 +18,10 @@ package com.database.movie;
 import android.app.Application;
 import android.content.Context;
 
+import com.database.movie.di.components.ApplicationComponent;
+import com.database.movie.di.components.DaggerApplicationComponent;
+import com.database.movie.di.modules.ApplicationModule;
+
 /**
  * @author Ilanthirayan Paramanathan <theebankala@gmail.com>
  * @version 1.0.0
@@ -26,6 +30,8 @@ import android.content.Context;
 public class TheMovieDBApplication extends Application {
 
     protected Context mContext;
+
+    protected ApplicationComponent mApplicationComponent;
 
     @Override
     public void onCreate() {
@@ -37,7 +43,14 @@ public class TheMovieDBApplication extends Application {
     }
 
     private void initializeApplicationComponent(){
+        mApplicationComponent = DaggerApplicationComponent
+                .builder()
+                .applicationModule(new ApplicationModule(getApplicationContext()))
+                .build();
+    }
 
+    public ApplicationComponent getApplicationComponent() {
+        return mApplicationComponent;
     }
 
 }

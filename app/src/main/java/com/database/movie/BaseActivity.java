@@ -23,6 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.database.movie.di.components.ApplicationComponent;
 import com.database.movie.presentation_layer.dialogs.MessageAlertDialog;
 import com.database.movie.utils.Utils;
 
@@ -74,10 +75,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressDialog.dismiss();
     }
 
-    /*
+
     public ApplicationComponent getApplicationComponent(){
         return ((TheMovieDBApplication)getApplication()).getApplicationComponent();
-    }*/
+    }
 
     public boolean isInternetAvailable() {
         return Utils.isInternetAvailable(this);
