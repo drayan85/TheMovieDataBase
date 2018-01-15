@@ -16,8 +16,11 @@
 package com.database.movie.data_layer.api;
 
 
+import com.database.movie.data_layer.api.response.PaginatedMovies;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * This interface will describe Retrofit 2 service methods.
@@ -29,6 +32,6 @@ import retrofit2.http.GET;
 public interface ApiServiceInterface {
 
 
-    @GET("/3/movie/550?api_key={api_key}")
-    Observable<String> getNowPlayingMovies();
+    @GET("/3/movie/now_playing")
+    Observable<PaginatedMovies> getNowPlayingMovies(@Query("api_key") String api_key, @Query("language") String language, @Query("page") int page);
 }
