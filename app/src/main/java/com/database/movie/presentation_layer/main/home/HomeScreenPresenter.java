@@ -109,7 +109,7 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
             @Override
             public void onNext(PaginatedMovies paginatedMovies) {
                 if(forceUpdate){
-                    mHomeScreenView.onSwipeRefreshItemsLoadComplete(paginatedMovies);
+                    mHomeScreenView.onSwipeRefreshItemsLoadComplete(paginatedMovies, mImageLoadingHelper);
                 }else{
                     mHomeScreenView.initializeList(paginatedMovies, mImageLoadingHelper);
                 }

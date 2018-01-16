@@ -39,7 +39,7 @@ public interface HomeScreenContractor {
 
         void showNoInternetMessage();
 
-        void onSwipeRefreshItemsLoadComplete(PaginatedMovies paginatedMovies);
+        void onSwipeRefreshItemsLoadComplete(PaginatedMovies paginatedMovies, ImageLoadingHelper mImageLoadingHelper);
 
         void onLoadMoreItemsCompleted(PaginatedMovies paginatedMovies);
 

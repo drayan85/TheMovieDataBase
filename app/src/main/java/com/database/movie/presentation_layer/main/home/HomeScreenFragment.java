@@ -176,9 +176,12 @@ public class HomeScreenFragment extends NavigationFragment implements HomeScreen
     }
 
     @Override
-    public void onSwipeRefreshItemsLoadComplete(PaginatedMovies paginatedMovies) {
-        mRecyclerViewAdapter.swapItems(Arrays.asList(paginatedMovies.getResults()));
-
+    public void onSwipeRefreshItemsLoadComplete(PaginatedMovies paginatedMovies, ImageLoadingHelper mImageLoadingHelper) {
+        if(mRecyclerViewAdapter == null){
+            initializeList(paginatedMovies, mImageLoadingHelper);
+        }else{
+            mRecyclerViewAdapter.swapItems(Arrays.asList(paginatedMovies.getResults()));
+        }
         previousTotal = 0;//enable the load more again
 
         // Stop refresh animation
@@ -208,8 +211,14 @@ public class HomeScreenFragment extends NavigationFragment implements HomeScreen
     }
 
     @Override
-    public void initializeList(PaginatedMovies paginatedMovies, ImageLoadingHelper imageLoadingHelper) {
-        if(mRecyclerView.getVisibility() != View.VISIBLE || mRecyclerViewAdapter == null){
+    public void initializeList(@NonNull PaginatedMovies paginatedMovies, ImageLoadingHelper imageLoadingHelper) {
+        if(paginatedMovies.getResults() == null){
+            if(isInternetAvailable()){
+                showNoInternetMessage();
+            }else{
+                showEmptyMessage();
+            }
+        }else if(mRecyclerView.getVisibility() != View.VISIBLE || mRecyclerViewAdapter == null){
             showItemListLayout();
             //initialise the adapter
             mRecyclerView.setHasFixedSize(true);
