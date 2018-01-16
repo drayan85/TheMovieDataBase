@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void setSupportActionBarView() {
         mToolbar = homeScreenBinding.toolbarHomeScreen;
-        mToolbar.setTitle(R.string.app_name);
+        mToolbar.setTitle(R.string.home_screen_title);
         setSupportActionBar(mToolbar);
         showHamburger();
     }

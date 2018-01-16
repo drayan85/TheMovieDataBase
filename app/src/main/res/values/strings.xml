@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">The Movie DataBase</string>
-    <string name="loading_text">Loading...</string>
+    <string name="home_screen_title">Now Playing Movies</string>
+    <string name="loading_text">Loading…</string>
     <string name="drawer_menu_home">Home</string>
     <string name="drawer_menu_settings">Settings</string>
     <string name="open">Open</string>
