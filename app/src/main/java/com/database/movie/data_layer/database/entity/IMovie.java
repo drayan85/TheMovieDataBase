@@ -49,7 +49,7 @@ public interface IMovie extends IBaseTable {
             + Columns.VOTE_AVERAGE + " REAL, "
             + Columns.BACKDROP_PATH + " TEXT, "
             + Columns.ADULT + " TEXT, "
-            + Columns.ID + " INTEGER, "
+            + Columns.ID + " REAL, "
             + Columns.TITLE + " TEXT, "
             + Columns.OVERVIEW + " TEXT, "
             + Columns.ORIGINAL_LANGUAGE + " TEXT, "
