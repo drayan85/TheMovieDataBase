@@ -28,6 +28,9 @@ import com.google.gson.Gson;
  */
 public class Movie {
 
+    //image_sizes = {w45, w92, w154, w185, w300, w500, original}
+    private static String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
+
     private double vote_average;
     private String backdrop_path;
     private boolean adult;
@@ -47,15 +50,19 @@ public class Movie {
         return vote_average;
     }
 
-    public void setVote_average(double vote_average) {
+    private void setVote_average(double vote_average) {
         this.vote_average = vote_average;
     }
 
-    public String getBackdrop_path() {
+    private String getBackdrop_path() {
         return backdrop_path;
     }
 
-    public void setBackdrop_path(String backdrop_path) {
+    public String getBackdrop_path_url(){
+        return IMAGE_BASE_URL + backdrop_path;
+    }
+
+    private void setBackdrop_path(String backdrop_path) {
         this.backdrop_path = backdrop_path;
     }
 
@@ -63,7 +70,7 @@ public class Movie {
         return adult;
     }
 
-    public void setAdult(boolean adult) {
+    private void setAdult(boolean adult) {
         this.adult = adult;
     }
 
@@ -87,7 +94,7 @@ public class Movie {
         return overview;
     }
 
-    public void setOverview(String overview) {
+    private void setOverview(String overview) {
         this.overview = overview;
     }
 
@@ -95,7 +102,7 @@ public class Movie {
         return original_language;
     }
 
-    public void setOriginal_language(String original_language) {
+    private void setOriginal_language(String original_language) {
         this.original_language = original_language;
     }
 
@@ -103,7 +110,7 @@ public class Movie {
         return genre_ids;
     }
 
-    public void setGenre_ids(int[] genre_ids) {
+    private void setGenre_ids(int[] genre_ids) {
         this.genre_ids = genre_ids;
     }
 
@@ -111,7 +118,7 @@ public class Movie {
         return release_date;
     }
 
-    public void setRelease_date(String release_date) {
+    private void setRelease_date(String release_date) {
         this.release_date = release_date;
     }
 
@@ -119,7 +126,7 @@ public class Movie {
         return original_title;
     }
 
-    public void setOriginal_title(String original_title) {
+    private void setOriginal_title(String original_title) {
         this.original_title = original_title;
     }
 
@@ -127,15 +134,19 @@ public class Movie {
         return vote_count;
     }
 
-    public void setVote_count(int vote_count) {
+    private void setVote_count(int vote_count) {
         this.vote_count = vote_count;
     }
 
-    public String getPoster_path() {
+    private String getPoster_path() {
         return poster_path;
     }
 
-    public void setPoster_path(String poster_path) {
+    public String getPoster_path_url(){
+        return IMAGE_BASE_URL + poster_path;
+    }
+
+    private void setPoster_path(String poster_path) {
         this.poster_path = poster_path;
     }
 
@@ -143,7 +154,7 @@ public class Movie {
         return video;
     }
 
-    public void setVideo(boolean video) {
+    private void setVideo(boolean video) {
         this.video = video;
     }
 
@@ -151,7 +162,7 @@ public class Movie {
         return popularity;
     }
 
-    public void setPopularity(double popularity) {
+    private void setPopularity(double popularity) {
         this.popularity = popularity;
     }
 
