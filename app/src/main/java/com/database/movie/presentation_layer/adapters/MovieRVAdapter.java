@@ -20,9 +20,11 @@ import android.databinding.ViewDataBinding;
 import android.os.Handler;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.database.movie.BR;
@@ -30,12 +32,19 @@ import com.database.movie.R;
 import com.database.movie.data_layer.model.Movie;
 import com.database.movie.databinding.MovieAdapterBinding;
 import com.database.movie.utils.ImageLoadingHelper;
+import com.database.movie.utils.MovieListDiffCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * This specifies the contract between the view and the presenter.
@@ -68,7 +77,16 @@ public class MovieRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void swapItems(final List<Movie> newMovies){
-
+        Observable<DiffUtil.DiffResult> mObservable = Observable.just(mMovieList)
+                .flatMap(new Function<List<Movie>, ObservableSource<DiffUtil.DiffResult>>() {
+                    @Override
+                    public ObservableSource<DiffUtil.DiffResult> apply(@NonNull List<Movie> oldMovie) throws Exception {
+                        return Observable.just(DiffUtil .calculateDiff(new MovieListDiffCallback(oldMovie, newMovies), true));
+                    }
+                })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+        mDisposables.add(mObservable.subscribeWith(new SwapItemsObserver(this, newMovies)));
     }
 
     public class ProgressViewHolder extends RecyclerView.ViewHolder {
@@ -116,16 +134,32 @@ public class MovieRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public class MovieDetailsViewHolder extends RecyclerView.ViewHolder{
 
         private final ViewDataBinding binding;
+        private final ImageView moviePosterImg;
 
-        public MovieDetailsViewHolder(ViewDataBinding binding) {
+        public MovieDetailsViewHolder(MovieAdapterBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            moviePosterImg = binding.moviePosterImg;
         }
 
         public void bind(final RecyclerView.ViewHolder holder){
             final Movie movie = mMovieList.get(holder.getAdapterPosition());
             binding.setVariable(BR.movie, movie);
             binding.executePendingBindings();
+
+            //SET THE BANNER IMAGE
+            if(!TextUtils.isEmpty(movie.getPoster_path_url())){
+                mImageLoadingHelper.load(movie.getPoster_path_url(), moviePosterImg);
+            }else if(!TextUtils.isEmpty(movie.getBackdrop_path_url())){
+                mImageLoadingHelper.load(movie.getBackdrop_path_url(), moviePosterImg);
+            }
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAdapterCallback.onClickItem(movie);
+                }
+            });
         }
     }
 
