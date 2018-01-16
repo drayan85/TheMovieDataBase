@@ -34,7 +34,7 @@ import javax.inject.Singleton;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "the_movie_database.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static final String TAG = DBHelper.class.getSimpleName();
 
     public DBHelper(Context context){

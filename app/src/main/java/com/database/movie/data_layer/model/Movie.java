@@ -191,7 +191,7 @@ public class Movie {
         setVote_count(cursor.getInt(i));
 
         i = cursor.getColumnIndexOrThrow(IMovie.Columns.ID);
-        setId(cursor.getInt(i));
+        setId(cursor.getLong(i));
 
         i = cursor.getColumnIndexOrThrow(IMovie.Columns.VIDEO);
         setVideo(Boolean.valueOf(cursor.getString(i)));
