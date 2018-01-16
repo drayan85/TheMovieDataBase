@@ -10,4 +10,10 @@
     <string name="no_internet_connection_title">No Internet Connection!</string>
     <string name="empty_list_description">There is no Movies found, Please come back later</string>
     <string name="no_movies_title">No Now Playing Movies</string>
+
+    <!--Movie Recycler View Adapter-->
+    <string name="number_of_votes_txt">Number of Votes: &#160;%s</string>
+    <string name="average_vote_txt">Average Vote: &#160;%s</string>
+    <string name="adult_content_warning_txt">WARNING!! ADULT CONTENT MOVIE(R18+).</string>
+    <string name="movie_release_date_txt">Released on &#160;%s</string>
 </resources>
