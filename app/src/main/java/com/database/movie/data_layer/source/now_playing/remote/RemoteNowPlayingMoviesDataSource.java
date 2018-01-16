@@ -15,6 +15,7 @@
  */
 package com.database.movie.data_layer.source.now_playing.remote;
 
+import com.database.movie.BuildConfig;
 import com.database.movie.data_layer.api.ApiServiceInterface;
 import com.database.movie.data_layer.api.response.PaginatedMovies;
 import com.database.movie.data_layer.source.now_playing.NowPlayingMoviesDataSource;
@@ -48,8 +49,7 @@ public class RemoteNowPlayingMoviesDataSource implements NowPlayingMoviesDataSou
      */
     @Override
     public Observable getNowPlayingMovies(int current_page, int per_page) {
-        //TODO please replace the api_key with your api_key to run the application
-        return mRetrofit.create(ApiServiceInterface.class).getNowPlayingMovies("api_key", "en-US", current_page);
+        return mRetrofit.create(ApiServiceInterface.class).getNowPlayingMovies(BuildConfig.API_KEY, "en-US", current_page);
     }
 
     @Override

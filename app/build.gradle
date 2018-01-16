@@ -6,17 +6,18 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
 
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.database.movie"
         vectorDrawables.useSupportLibrary = true
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "String" , "API_KEY" ,  "\"$THE_MOVIE_DATABASE_API_KEY\""
     }
 
     testOptions {
