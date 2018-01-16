@@ -15,25 +15,19 @@
  */
 package com.database.movie.data_layer.database.entity;
 
-import android.provider.BaseColumns;
-
 /**
  * @author Ilanthirayan Paramanathan <theebankala@gmail.com>
  * @version 1.0.0
- * @since 15th of January 2018
+ * @since 16th of January 2018
  */
-public interface INowPlayingMovie extends IBaseTable {
-
-    interface Columns extends BaseColumns {
-        String ID = "id";
-    }
+public interface INowPlayingMovie extends IMovieID {
 
     String TABLE_NAME = "tbl_now_playing_movie";
 
     String CREATE_TABLE_NOW_PLAYING_MOVIES = CREATE_TABLE
             + TABLE_NAME + " ("
             + Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + Columns.ID+ " INTEGER); ";
+            + Columns.ID+ " REAL); ";
 
     String CREATE_NOW_PLAYING_MOVIES_INDEX_ID = CREATE_INDEX
             + CREATE_INDEX_BASED_ON
