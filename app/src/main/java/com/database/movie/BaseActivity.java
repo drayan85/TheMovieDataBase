@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.database.movie.di.components.ApplicationComponent;
+import com.database.movie.di.modules.ActivityModule;
 import com.database.movie.presentation_layer.dialogs.MessageAlertDialog;
 import com.database.movie.utils.Utils;
 
@@ -76,8 +77,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    public ApplicationComponent getApplicationComponent(){
+    protected ApplicationComponent getApplicationComponent(){
         return ((TheMovieDBApplication)getApplication()).getApplicationComponent();
+    }
+
+    protected ActivityModule getActivityModule() {
+        return new ActivityModule(this);
     }
 
     public boolean isInternetAvailable() {

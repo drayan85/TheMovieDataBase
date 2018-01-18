@@ -36,7 +36,6 @@ import com.database.movie.R;
 import com.database.movie.databinding.HomeScreenBinding;
 import com.database.movie.databinding.NavigationDrawerBinding;
 import com.database.movie.di.components.DaggerHomeScreenComponent;
-import com.database.movie.di.modules.ActivityModule;
 import com.database.movie.di.modules.HomeScreenViewModule;
 import com.database.movie.di.modules.NowPlayingMovieModule;
 import com.database.movie.presentation_layer.main.home.HomeScreenFragment;
@@ -128,8 +127,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void resolveDaggerDependency() {
         DaggerHomeScreenComponent
                 .builder()
-                .activityModule(new ActivityModule(this))
                 .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
                 .homeScreenViewModule(new HomeScreenViewModule(mHomeFragment))
                 .nowPlayingMovieModule(new NowPlayingMovieModule())
                 .build()
