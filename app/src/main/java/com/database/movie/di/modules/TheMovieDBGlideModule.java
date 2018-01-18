@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class TheMovieDBGlideModule extends AppGlideModule {
 
     // Size in bytes (20 MB)
-    final int GLIDE_DISK_CACHE_SIZE = 1024 * 1024 * 20;
+    private final int GLIDE_DISK_CACHE_SIZE = 1024 * 1024 * 20;
 
     @SuppressLint("CheckResult")
     @Override
