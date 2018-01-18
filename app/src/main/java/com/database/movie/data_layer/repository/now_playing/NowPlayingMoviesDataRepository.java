@@ -12,11 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */package com.database.movie.data_layer.source.now_playing;
+ */package com.database.movie.data_layer.repository.now_playing;
 
 import com.database.movie.data_layer.api.response.PaginatedMovies;
-import com.database.movie.data_layer.source.Local;
-import com.database.movie.data_layer.source.Remote;
+import com.database.movie.data_layer.repository.Local;
+import com.database.movie.data_layer.repository.Remote;
+import com.database.movie.data_layer.repository.now_playing.source.NowPlayingMoviesDataSource;
 import com.database.movie.domain_layer.repository.NowPlayingMoviesRepository;
 
 import javax.inject.Inject;
@@ -41,7 +42,7 @@ public class NowPlayingMoviesDataRepository implements NowPlayingMoviesRepositor
     }
 
     @Override
-    public Observable getNowPlayingMovies(int current_page, int per_page, boolean isInternetAvailable) {
+    public Observable<PaginatedMovies> getNowPlayingMovies(int current_page, int per_page, boolean isInternetAvailable) {
         if(isInternetAvailable){
             return mRemoteNowPlayingMoviesDataSource.getNowPlayingMovies(current_page, per_page);
         }else{
@@ -50,7 +51,7 @@ public class NowPlayingMoviesDataRepository implements NowPlayingMoviesRepositor
     }
 
     @Override
-    public Observable saveNowPlayingMovies(PaginatedMovies paginatedMovies) {
+    public Observable<Boolean> saveNowPlayingMovies(PaginatedMovies paginatedMovies) {
         return mDiskNowPlayingMoviesDataSource.saveNowPlayingMovies(paginatedMovies);
     }
 }

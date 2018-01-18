@@ -26,7 +26,7 @@ import io.reactivex.Observable;
  */
 public interface NowPlayingMoviesRepository {
 
-    Observable getNowPlayingMovies(int current_page, int per_page, boolean isInternetAvailable);
+    Observable<PaginatedMovies> getNowPlayingMovies(int current_page, int per_page, boolean isInternetAvailable);
 
-    Observable saveNowPlayingMovies(PaginatedMovies paginatedMovies);
+    Observable<Boolean> saveNowPlayingMovies(PaginatedMovies paginatedMovies);
 }

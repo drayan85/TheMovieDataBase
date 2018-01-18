@@ -19,9 +19,10 @@ package com.database.movie.presentation_layer.main.home;
 import com.database.movie.data_layer.api.RetrofitException;
 import com.database.movie.data_layer.api.response.APIError;
 import com.database.movie.data_layer.api.response.PaginatedMovies;
-import com.database.movie.domain_layer.usecase.DefaultObserver;
-import com.database.movie.domain_layer.usecase.now_playing.GetNowPlayingMovies;
-import com.database.movie.domain_layer.usecase.now_playing.SaveNowPlayingMovies;
+import com.database.movie.domain_layer.interactor.DefaultObserver;
+import com.database.movie.domain_layer.interactor.PaginatedParams;
+import com.database.movie.domain_layer.interactor.now_playing.GetNowPlayingMovies;
+import com.database.movie.domain_layer.interactor.now_playing.SaveNowPlayingMovies;
 import com.database.movie.utils.ImageLoadingHelper;
 
 import java.io.IOException;

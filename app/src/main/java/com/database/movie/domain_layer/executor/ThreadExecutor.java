@@ -15,7 +15,7 @@
  */
 package com.database.movie.domain_layer.executor;
 
-import com.database.movie.domain_layer.usecase.UseCase;
+import com.database.movie.domain_layer.interactor.UseCase;
 
 import java.util.concurrent.Executor;
 

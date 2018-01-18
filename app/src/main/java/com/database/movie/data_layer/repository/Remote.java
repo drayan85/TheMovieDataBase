@@ -13,27 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.data_layer.source.now_playing;
+package com.database.movie.data_layer.repository;
 
-import com.database.movie.data_layer.api.response.PaginatedMovies;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import io.reactivex.Observable;
+import javax.inject.Qualifier;
 
 /**
  * @author Ilanthirayan Paramanathan <theebankala@gmail.com>
  * @version 1.0.0
  * @since 15th of January 2018
  */
-public interface NowPlayingMoviesDataSource<T> {
-
-    /**
-     * Get an {@link Observable} which will emit a {@link T}
-     *
-     * @param current_page
-     * @param per_page
-     * @return {@link Observable} <{@link T}>
-     */
-    Observable<T> getNowPlayingMovies(int current_page, int per_page);
-
-    Observable saveNowPlayingMovies(PaginatedMovies paginatedMovies);
+@Qualifier
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Remote {
 }

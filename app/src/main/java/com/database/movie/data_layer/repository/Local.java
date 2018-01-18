@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.data_layer.source;
+package com.database.movie.data_layer.repository;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -29,5 +29,5 @@ import javax.inject.Qualifier;
 @Qualifier
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Remote {
+public @interface Local {
 }

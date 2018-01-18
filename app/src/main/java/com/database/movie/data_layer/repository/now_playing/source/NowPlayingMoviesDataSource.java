@@ -13,31 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.domain_layer.usecase;
+package com.database.movie.data_layer.repository.now_playing.source;
 
-import io.reactivex.observers.DisposableObserver;
+import com.database.movie.data_layer.api.response.PaginatedMovies;
+
+import io.reactivex.Observable;
 
 /**
- * Default {@link DisposableObserver} base class to be used whenever you want default error handling.
- *
  * @author Ilanthirayan Paramanathan <theebankala@gmail.com>
  * @version 1.0.0
  * @since 15th of January 2018
  */
-public class DefaultObserver<T> extends DisposableObserver<T> {
+public interface NowPlayingMoviesDataSource {
 
-    @Override
-    public void onNext(T t) {
+    /**
+     * Get an {@link Observable} which will emit a {@link PaginatedMovies}
+     *
+     * @param current_page
+     * @param per_page
+     * @return {@link Observable} <{@link PaginatedMovies}>
+     */
+    Observable<PaginatedMovies> getNowPlayingMovies(int current_page, int per_page);
 
-    }
-
-    @Override
-    public void onError(Throwable e) {
-
-    }
-
-    @Override
-    public void onComplete() {
-
-    }
+    Observable<Boolean> saveNowPlayingMovies(PaginatedMovies paginatedMovies);
 }

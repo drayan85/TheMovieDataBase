@@ -13,21 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.data_layer.source;
+package com.database.movie.domain_layer.interactor;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import javax.inject.Qualifier;
+import io.reactivex.observers.DisposableObserver;
 
 /**
+ * Default {@link DisposableObserver} base class to be used whenever you want default error handling.
+ *
  * @author Ilanthirayan Paramanathan <theebankala@gmail.com>
  * @version 1.0.0
  * @since 15th of January 2018
  */
-@Qualifier
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Local {
+public class DefaultObserver<T> extends DisposableObserver<T> {
+
+    @Override
+    public void onNext(T t) {
+
+    }
+
+    @Override
+    public void onError(Throwable e) {
+
+    }
+
+    @Override
+    public void onComplete() {
+
+    }
 }

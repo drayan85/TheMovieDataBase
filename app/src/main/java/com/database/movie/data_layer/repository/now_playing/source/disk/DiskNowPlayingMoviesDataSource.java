@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.data_layer.source.now_playing.disk;
+package com.database.movie.data_layer.repository.now_playing.source.disk;
 
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -28,7 +28,7 @@ import com.database.movie.data_layer.database.entity.IMovieID;
 import com.database.movie.data_layer.database.entity.INowPlayingMovie;
 import com.database.movie.data_layer.model.Movie;
 import com.database.movie.data_layer.model.MovieID;
-import com.database.movie.data_layer.source.now_playing.NowPlayingMoviesDataSource;
+import com.database.movie.data_layer.repository.now_playing.source.NowPlayingMoviesDataSource;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
