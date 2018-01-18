@@ -44,6 +44,8 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
 
     private AtomicInteger current_page = new AtomicInteger(1);
     private final int per_page = 10;
+    private int total_local_movies = 0;
+    private int total_remote_movies = 0;
 
     @Inject
     public HomeScreenPresenter(HomeScreenContractor.View homeScreenView,
@@ -71,12 +73,36 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
 
     @Override
     public void getPaginatedItems(final boolean isInternetAvailable) {
+        //if there is not internet, check in the local table have more item,
+        // if have more item then only execute otherwise no need request
+        if (!isInternetAvailable && total_local_movies <= mHomeScreenView.getTotalNumberOfItemsInAdapter()) {
+            //no need to load more videos
+            return;
+        }
+        //All items are loaded check
+        if (total_remote_movies > 0 && total_remote_movies <= mHomeScreenView.getTotalNumberOfItemsInAdapter()) {
+            //no need to load more videos
+            return;
+        }
+
+        //Enable loading progress bar
+        mHomeScreenView.addNullObjectToEnableLoadMoreProgress();
+
+
         mGetNowPlayingMovies.execute(new PaginatedMoviesObserver() {
             @Override
             public void onNext(PaginatedMovies paginatedMovies) {
-                mHomeScreenView.onLoadMoreItemsCompleted(paginatedMovies);
-                if(isInternetAvailable){
-                    saveItemListInToLocalDataBase(paginatedMovies);
+                if(paginatedMovies.getResults() != null && paginatedMovies.getResults().length > 0){
+                    if(isInternetAvailable){
+                        saveItemListInToLocalDataBase(paginatedMovies);
+                        total_remote_movies = paginatedMovies.getTotal_results();
+                    }else{
+                        total_local_movies = paginatedMovies.getTotal_results();
+                    }
+                    mHomeScreenView.onLoadMoreItemsCompleted(paginatedMovies);
+                }else{
+                    //remove progress added at the bottom
+                    mHomeScreenView.noMoreItemsToDisplay();
                 }
             }
 
@@ -93,6 +119,7 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
         mGetNowPlayingMovies.execute(new PaginatedMoviesObserver() {
             @Override
             public void onNext(PaginatedMovies paginatedMovies) {
+                total_local_movies = paginatedMovies.getTotal_results();
                 mHomeScreenView.initializeList(paginatedMovies, mImageLoadingHelper);
             }
 
@@ -114,6 +141,7 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
                 }else{
                     mHomeScreenView.initializeList(paginatedMovies, mImageLoadingHelper);
                 }
+                total_remote_movies = paginatedMovies.getTotal_results();
                 saveItemListInToLocalDataBase(paginatedMovies);
             }
 
