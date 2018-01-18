@@ -84,7 +84,7 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
             public void onError(Throwable e) {
                 retrofitExceptionHandler(e);
             }
-        }, mGetNowPlayingMovies.buildUseCaseObservable(current_page.incrementAndGet(), per_page, isInternetAvailable));
+        }, new PaginatedParams(current_page.incrementAndGet(), per_page, isInternetAvailable));
     }
 
     @Override
@@ -100,7 +100,7 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
             public void onError(Throwable e) {
                 retrofitExceptionHandler(e);
             }
-        }, mGetNowPlayingMovies.buildUseCaseObservable(current_page.get(), per_page, false));
+        }, new PaginatedParams(current_page.get(), per_page, false));
     }
 
     @Override
@@ -121,12 +121,12 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
             public void onError(Throwable e) {
                 retrofitExceptionHandler(e);
             }
-        }, mGetNowPlayingMovies.buildUseCaseObservable(current_page.get(), per_page, true));
+        }, new PaginatedParams(current_page.get(), per_page, true));
     }
 
     @Override
     public void saveItemListInToLocalDataBase(PaginatedMovies paginatedMovies) {
-        mSaveNowPlayingMovies.execute(new BooleanObserver() {}, mSaveNowPlayingMovies.buildUseCaseObservable(paginatedMovies));
+        mSaveNowPlayingMovies.execute(new BooleanObserver() {}, paginatedMovies);
     }
 
     @Override
@@ -142,10 +142,10 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
             try {
                 RetrofitException retrofitException = (RetrofitException) e;
                 errorBody = retrofitException.getErrorBodyAs(APIError.class);
-                int responseCode = retrofitException.getResponse() != null ? retrofitException.getResponse().code() : 0;//From Response Header
-                if(responseCode == 401 || responseCode == 403){
+                //int responseCode = retrofitException.getResponse() != null ? retrofitException.getResponse().code() : 0;//From Response Header
+                //if(responseCode == 401 || responseCode == 403){
                     //access token has been expired, need to renew the token
-                }
+                //}
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
