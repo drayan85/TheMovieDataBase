@@ -116,6 +116,7 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
     @Override
     public void getFirstSetOfLocalItems(boolean forceUpdate) {
         current_page.set(1);
+        mHomeScreenView.showLoadingIndicator();
         mGetNowPlayingMovies.execute(new PaginatedMoviesObserver() {
             @Override
             public void onNext(PaginatedMovies paginatedMovies) {
