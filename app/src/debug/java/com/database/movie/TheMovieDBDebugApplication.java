@@ -17,6 +17,10 @@ package com.database.movie;
 
 import android.os.StrictMode;
 
+import com.database.movie.di.components.DaggerApplicationComponent;
+import com.database.movie.di.components.DaggerDebugApplicationComponent;
+import com.database.movie.di.modules.ApplicationModule;
+import com.database.movie.di.modules.DebugApplicationModule;
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -53,5 +57,13 @@ public class TheMovieDBDebugApplication extends TheMovieDBApplication {
         LeakCanary.install(this);
 
         Stetho.initializeWithDefaults(this);
+    }
+
+    @Override
+    public void initializeApplicationComponent(){
+        mApplicationComponent = DaggerDebugApplicationComponent
+                .builder()
+                .debugApplicationModule(new DebugApplicationModule(getApplicationContext()))
+                .build();
     }
 }

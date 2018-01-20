@@ -42,7 +42,7 @@ public class TheMovieDBApplication extends Application {
         initializeApplicationComponent();
     }
 
-    private void initializeApplicationComponent(){
+    public void initializeApplicationComponent(){
         mApplicationComponent = DaggerApplicationComponent
                 .builder()
                 .applicationModule(new ApplicationModule(getApplicationContext()))
