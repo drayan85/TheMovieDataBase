@@ -73,29 +73,15 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
 
     @Override
     public void getPaginatedItems(final boolean isInternetAvailable) {
-        //if there is not internet, check in the local table have more item,
-        // if have more item then only execute otherwise no need request
-        if (!isInternetAvailable && total_local_movies <= mHomeScreenView.getTotalNumberOfItemsInAdapter()) {
-            //no need to load more videos
-            return;
-        }
-        //All items are loaded check
-        if (total_remote_movies > 0 && total_remote_movies <= mHomeScreenView.getTotalNumberOfItemsInAdapter()) {
-            //no need to load more videos
-            return;
-        }
-
         //Enable loading progress bar
         mHomeScreenView.addNullObjectToEnableLoadMoreProgress();
-
-
         mGetNowPlayingMovies.execute(new PaginatedMoviesObserver() {
             @Override
             public void onNext(PaginatedMovies paginatedMovies) {
                 if(paginatedMovies.getResults() != null && paginatedMovies.getResults().length > 0){
                     if(isInternetAvailable){
                         saveItemListInToLocalDataBase(paginatedMovies);
-                        total_remote_movies = paginatedMovies.getTotal_results();
+                        total_local_movies = paginatedMovies.getTotal_results();
                     }else{
                         total_local_movies = paginatedMovies.getTotal_results();
                     }
@@ -156,6 +142,16 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
     @Override
     public void saveItemListInToLocalDataBase(PaginatedMovies paginatedMovies) {
         mSaveNowPlayingMovies.execute(new BooleanObserver() {}, paginatedMovies);
+    }
+
+    @Override
+    public int getTotal_local_movies() {
+        return total_local_movies;
+    }
+
+    @Override
+    public int getTotal_remote_movies() {
+        return total_remote_movies;
     }
 
     @Override

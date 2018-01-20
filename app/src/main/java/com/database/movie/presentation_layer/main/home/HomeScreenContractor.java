@@ -67,6 +67,10 @@ public interface HomeScreenContractor {
         void saveItemListInToLocalDataBase(PaginatedMovies paginatedMovies);
 
         void onDestroy();
+
+        int getTotal_local_movies();
+
+        int getTotal_remote_movies();
     }
 
 }

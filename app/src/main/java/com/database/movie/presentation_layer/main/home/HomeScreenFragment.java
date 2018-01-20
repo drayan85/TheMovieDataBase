@@ -126,6 +126,18 @@ public class HomeScreenFragment extends NavigationFragment implements HomeScreen
 
     private void onLoadMore() {
         if(mPresenter != null){
+            //if there is not internet, check in the local table have more item,
+            // if have more item then only execute otherwise no need request
+            if (!isInternetAvailable() && mPresenter.getTotal_local_movies() <= getTotalNumberOfItemsInAdapter()) {
+                //no need to load more videos
+                return;
+            }
+            //All items are loaded check
+            if (mPresenter.getTotal_remote_movies() > 0 && mPresenter.getTotal_remote_movies() <= getTotalNumberOfItemsInAdapter()) {
+                //no need to load more videos
+                return;
+            }
+
             mPresenter.getPaginatedItems(isInternetAvailable());
         }
     }
