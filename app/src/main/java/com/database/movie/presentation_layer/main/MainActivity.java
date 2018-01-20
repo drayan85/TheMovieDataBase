@@ -68,8 +68,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     HomeScreenPresenter mPresenter;
 
     public static void start(Context context) {
-        Intent starter = new Intent(context, MainActivity.class);
-        context.startActivity(starter);
+        context.startActivity(getCallingIntent(context));
+    }
+
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, MainActivity.class);
     }
 
     @Override
@@ -179,5 +182,4 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
 }
