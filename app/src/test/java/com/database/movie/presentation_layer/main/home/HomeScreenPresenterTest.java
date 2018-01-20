@@ -18,8 +18,6 @@
 
 package com.database.movie.presentation_layer.main.home;
 
-import android.content.Context;
-
 import com.database.movie.data_layer.api.response.PaginatedMovies;
 import com.database.movie.domain_layer.interactor.PaginatedParams;
 import com.database.movie.domain_layer.interactor.now_playing.GetNowPlayingMovies;
@@ -47,26 +45,24 @@ import static org.mockito.Mockito.verify;
 public class HomeScreenPresenterTest {
 
     @Mock
-    private Context mockContext;
-    @Mock
     private HomeScreenContractor.View mockHomeScreenView;
     @Mock
     private GetNowPlayingMovies mockGetNowPlayingMovies;
     @Mock
     private SaveNowPlayingMovies mockSaveNowPlayingMovies;
+    @Mock
+    private ImageLoadingHelper mockImageLoadingHelper;
 
     @Mock
     private PaginatedMovies mockPaginatedMovies;
 
     private HomeScreenPresenter presenter;
-    private ImageLoadingHelper mImageLoadingHelper;
+
 
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        mImageLoadingHelper = new ImageLoadingHelper(mockContext);
-        presenter = new HomeScreenPresenter(mockHomeScreenView, mockGetNowPlayingMovies, mockSaveNowPlayingMovies, mImageLoadingHelper);
-        mockHomeScreenView.setPresenter(presenter);
+        presenter = new HomeScreenPresenter(mockHomeScreenView, mockGetNowPlayingMovies, mockSaveNowPlayingMovies, mockImageLoadingHelper);
     }
 
     @Test
@@ -94,4 +90,24 @@ public class HomeScreenPresenterTest {
         verify(mockSaveNowPlayingMovies).execute(any(DisposableObserver.class), any(PaginatedMovies.class));
     }
 
+    @Test
+    public void onDestroy_callPresenter(){
+        presenter.onDestroy();
+        verify(mockSaveNowPlayingMovies).dispose();
+        verify(mockGetNowPlayingMovies).dispose();
+    }
+
+    @Test
+    public void getPaginatedNowPlayingMovie_whenInternetAvailable(){
+        presenter.getPaginatedItems(true);
+        verify(mockHomeScreenView).addNullObjectToEnableLoadMoreProgress();
+        verify(mockGetNowPlayingMovies).execute(any(DisposableObserver.class), any(PaginatedParams.class));
+    }
+
+    @Test
+    public void getPaginatedNowPlayingMovie_whenNoInternet(){
+        presenter.getPaginatedItems(false);
+        verify(mockHomeScreenView).addNullObjectToEnableLoadMoreProgress();
+        verify(mockGetNowPlayingMovies).execute(any(DisposableObserver.class), any(PaginatedParams.class));
+    }
 }
