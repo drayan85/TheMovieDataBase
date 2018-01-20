@@ -29,7 +29,6 @@ import com.database.movie.utils.ImageLoadingHelper;
 import com.database.movie.utils.JsonFormatHttpLogging;
 import com.database.movie.utils.SharedPreferencesHelper;
 import com.database.movie.utils.Utils;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -171,7 +170,7 @@ public class ApplicationModule {
             //builder.networkInterceptors().add(httpLoggingInterceptor);
             //builder.addNetworkInterceptor(httpLoggingInterceptor);
             //builder.interceptors().add(httpLoggingInterceptor);
-            builder.addNetworkInterceptor(new StethoInterceptor());
+            //builder.addNetworkInterceptor(new StethoInterceptor());
             builder.addInterceptor(httpLoggingInterceptor);
         }
         return builder.build();
