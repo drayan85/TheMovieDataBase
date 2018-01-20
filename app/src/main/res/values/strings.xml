@@ -16,4 +16,5 @@
     <string name="average_vote_txt">Average Vote: &#160;%s</string>
     <string name="adult_content_warning_txt">WARNING!! ADULT CONTENT MOVIE(R18+).</string>
     <string name="movie_release_date_txt">Released on &#160;%s</string>
+    <string name="default_user_name">John cater</string>
 </resources>
