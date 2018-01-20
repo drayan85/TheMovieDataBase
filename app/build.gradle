@@ -133,12 +133,12 @@ dependencies {
 
     //MEMORY LEAK LIBRARY (LeakCanary)
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${LEAKCANARY_VERSION}"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${LEAKCANARY_VERSION}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${LEAKCANARY_VERSION}"
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${LEAKCANARY_VERSION}"
 
     //FACEBOOK STETHO DEBUG BRIDGE
     debugImplementation "com.facebook.stetho:stetho:${STETHO_VERSION}"
-    //implementation "com.facebook.stetho:stetho-urlconnection:${STETHO_VERSION}
+    //debugImplementation "com.facebook.stetho:stetho-urlconnection:${STETHO_VERSION}
     debugImplementation "com.facebook.stetho:stetho-okhttp3:${STETHO_VERSION}"
     debugImplementation "com.facebook.stetho:stetho-js-rhino:${STETHO_VERSION}"
 
@@ -158,7 +158,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
 
     // Optional -- Hamcrest library
-//    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
 
     // Optional -- UI testing with Espresso
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib:${ESPRESSO_VERSION}"
