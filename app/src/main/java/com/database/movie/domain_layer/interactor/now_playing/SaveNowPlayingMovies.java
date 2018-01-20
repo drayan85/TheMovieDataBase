@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,36 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.domain_layer.usecase.now_playing;
+package com.database.movie.domain_layer.interactor.now_playing;
 
+import com.database.movie.data_layer.api.response.PaginatedMovies;
 import com.database.movie.domain_layer.executor.PostExecutionThread;
 import com.database.movie.domain_layer.executor.ThreadExecutor;
 import com.database.movie.domain_layer.repository.NowPlayingMoviesRepository;
-import com.database.movie.domain_layer.usecase.UseCase;
+import com.database.movie.domain_layer.interactor.UseCase;
 
 import javax.inject.Inject;
 
+import dagger.internal.Preconditions;
 import io.reactivex.Observable;
 
 /**
+ *
+ * This class is an implementation of {@link UseCase} that represents a use case for
+ * save NowPlaying Movies in SQLite Table {@link PaginatedMovies}.
+ *
  * @author Ilanthirayan Paramanathan <theebankala@gmail.com>
  * @version 1.0.0
  * @since 15th of January 2018
  */
-public class GetNowPlayingMovies extends UseCase {
+public class SaveNowPlayingMovies extends UseCase<Boolean, PaginatedMovies> {
 
     private NowPlayingMoviesRepository mNowPlayingMoviesRepository;
 
     @Inject
-    public GetNowPlayingMovies(ThreadExecutor threadExecutor,
-                               PostExecutionThread postExecutionThread,
-                               NowPlayingMoviesRepository mNowPlayingMoviesRepository) {
+    public SaveNowPlayingMovies(ThreadExecutor threadExecutor,
+                                PostExecutionThread postExecutionThread,
+                                NowPlayingMoviesRepository mNowPlayingMoviesRepository) {
         super(threadExecutor, postExecutionThread);
         this.mNowPlayingMoviesRepository = mNowPlayingMoviesRepository;
     }
 
 
-    public Observable buildUseCaseObservable(int current_page, int per_page, boolean isInternetAvailable){
-        return mNowPlayingMoviesRepository.getNowPlayingMovies(current_page, per_page, isInternetAvailable);
+    @Override
+    public Observable<Boolean> buildUseCaseObservable(PaginatedMovies paginatedMovies){
+        Preconditions.checkNotNull(paginatedMovies);
+        return mNowPlayingMoviesRepository.saveNowPlayingMovies(paginatedMovies);
     }
 }

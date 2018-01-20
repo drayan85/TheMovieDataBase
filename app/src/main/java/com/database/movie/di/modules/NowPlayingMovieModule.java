@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 package com.database.movie.di.modules;
 
 import com.database.movie.data_layer.database.DataBaseManager;
-import com.database.movie.data_layer.source.Local;
-import com.database.movie.data_layer.source.Remote;
-import com.database.movie.data_layer.source.now_playing.NowPlayingMoviesDataRepository;
-import com.database.movie.data_layer.source.now_playing.NowPlayingMoviesDataSource;
-import com.database.movie.data_layer.source.now_playing.disk.DiskNowPlayingMoviesDataSource;
-import com.database.movie.data_layer.source.now_playing.remote.RemoteNowPlayingMoviesDataSource;
+import com.database.movie.data_layer.repository.Local;
+import com.database.movie.data_layer.repository.Remote;
+import com.database.movie.data_layer.repository.now_playing.NowPlayingMoviesDataRepository;
+import com.database.movie.data_layer.repository.now_playing.source.NowPlayingMoviesDataSource;
+import com.database.movie.data_layer.repository.now_playing.source.disk.DiskNowPlayingMoviesDataSource;
+import com.database.movie.data_layer.repository.now_playing.source.remote.RemoteNowPlayingMoviesDataSource;
 import com.database.movie.di.PerActivity;
 import com.database.movie.domain_layer.repository.NowPlayingMoviesRepository;
 import com.google.gson.Gson;

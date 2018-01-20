@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,10 @@ package com.database.movie.presentation_layer.main.home;
 import com.database.movie.data_layer.api.RetrofitException;
 import com.database.movie.data_layer.api.response.APIError;
 import com.database.movie.data_layer.api.response.PaginatedMovies;
-import com.database.movie.domain_layer.usecase.DefaultObserver;
-import com.database.movie.domain_layer.usecase.now_playing.GetNowPlayingMovies;
-import com.database.movie.domain_layer.usecase.now_playing.SaveNowPlayingMovies;
+import com.database.movie.domain_layer.interactor.DefaultObserver;
+import com.database.movie.domain_layer.interactor.PaginatedParams;
+import com.database.movie.domain_layer.interactor.now_playing.GetNowPlayingMovies;
+import com.database.movie.domain_layer.interactor.now_playing.SaveNowPlayingMovies;
 import com.database.movie.utils.ImageLoadingHelper;
 
 import java.io.IOException;
@@ -43,6 +44,8 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
 
     private AtomicInteger current_page = new AtomicInteger(1);
     private final int per_page = 10;
+    private int total_local_movies = 0;
+    private int total_remote_movies = 0;
 
     @Inject
     public HomeScreenPresenter(HomeScreenContractor.View homeScreenView,
@@ -70,12 +73,22 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
 
     @Override
     public void getPaginatedItems(final boolean isInternetAvailable) {
+        //Enable loading progress bar
+        mHomeScreenView.addNullObjectToEnableLoadMoreProgress();
         mGetNowPlayingMovies.execute(new PaginatedMoviesObserver() {
             @Override
             public void onNext(PaginatedMovies paginatedMovies) {
-                mHomeScreenView.onLoadMoreItemsCompleted(paginatedMovies);
-                if(isInternetAvailable){
-                    saveItemListInToLocalDataBase(paginatedMovies);
+                if(paginatedMovies.getResults() != null && paginatedMovies.getResults().length > 0){
+                    if(isInternetAvailable){
+                        saveItemListInToLocalDataBase(paginatedMovies);
+                        total_local_movies = paginatedMovies.getTotal_results();
+                    }else{
+                        total_local_movies = paginatedMovies.getTotal_results();
+                    }
+                    mHomeScreenView.onLoadMoreItemsCompleted(paginatedMovies);
+                }else{
+                    //remove progress added at the bottom
+                    mHomeScreenView.noMoreItemsToDisplay();
                 }
             }
 
@@ -83,15 +96,17 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
             public void onError(Throwable e) {
                 retrofitExceptionHandler(e);
             }
-        }, mGetNowPlayingMovies.buildUseCaseObservable(current_page.incrementAndGet(), per_page, isInternetAvailable));
+        }, new PaginatedParams(current_page.incrementAndGet(), per_page, isInternetAvailable));
     }
 
     @Override
     public void getFirstSetOfLocalItems(boolean forceUpdate) {
         current_page.set(1);
+        mHomeScreenView.showLoadingIndicator();
         mGetNowPlayingMovies.execute(new PaginatedMoviesObserver() {
             @Override
             public void onNext(PaginatedMovies paginatedMovies) {
+                total_local_movies = paginatedMovies.getTotal_results();
                 mHomeScreenView.initializeList(paginatedMovies, mImageLoadingHelper);
             }
 
@@ -99,7 +114,7 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
             public void onError(Throwable e) {
                 retrofitExceptionHandler(e);
             }
-        }, mGetNowPlayingMovies.buildUseCaseObservable(current_page.get(), per_page, false));
+        }, new PaginatedParams(current_page.get(), per_page, false));
     }
 
     @Override
@@ -113,6 +128,7 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
                 }else{
                     mHomeScreenView.initializeList(paginatedMovies, mImageLoadingHelper);
                 }
+                total_remote_movies = paginatedMovies.getTotal_results();
                 saveItemListInToLocalDataBase(paginatedMovies);
             }
 
@@ -120,12 +136,22 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
             public void onError(Throwable e) {
                 retrofitExceptionHandler(e);
             }
-        }, mGetNowPlayingMovies.buildUseCaseObservable(current_page.get(), per_page, true));
+        }, new PaginatedParams(current_page.get(), per_page, true));
     }
 
     @Override
     public void saveItemListInToLocalDataBase(PaginatedMovies paginatedMovies) {
-        mSaveNowPlayingMovies.execute(new BooleanObserver() {}, mSaveNowPlayingMovies.buildUseCaseObservable(paginatedMovies));
+        mSaveNowPlayingMovies.execute(new BooleanObserver() {}, paginatedMovies);
+    }
+
+    @Override
+    public int getTotal_local_movies() {
+        return total_local_movies;
+    }
+
+    @Override
+    public int getTotal_remote_movies() {
+        return total_remote_movies;
     }
 
     @Override
@@ -141,10 +167,10 @@ public class HomeScreenPresenter implements HomeScreenContractor.Presenter{
             try {
                 RetrofitException retrofitException = (RetrofitException) e;
                 errorBody = retrofitException.getErrorBodyAs(APIError.class);
-                int responseCode = retrofitException.getResponse() != null ? retrofitException.getResponse().code() : 0;//From Response Header
-                if(responseCode == 401 || responseCode == 403){
+                //int responseCode = retrofitException.getResponse() != null ? retrofitException.getResponse().code() : 0;//From Response Header
+                //if(responseCode == 401 || responseCode == 403){
                     //access token has been expired, need to renew the token
-                }
+                //}
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }

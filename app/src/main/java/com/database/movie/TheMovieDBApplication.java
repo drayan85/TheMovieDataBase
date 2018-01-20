@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ public class TheMovieDBApplication extends Application {
         initializeApplicationComponent();
     }
 
-    private void initializeApplicationComponent(){
+    public void initializeApplicationComponent(){
         mApplicationComponent = DaggerApplicationComponent
                 .builder()
                 .applicationModule(new ApplicationModule(getApplicationContext()))

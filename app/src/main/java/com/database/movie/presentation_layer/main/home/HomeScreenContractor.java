@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,6 +67,10 @@ public interface HomeScreenContractor {
         void saveItemListInToLocalDataBase(PaginatedMovies paginatedMovies);
 
         void onDestroy();
+
+        int getTotal_local_movies();
+
+        int getTotal_remote_movies();
     }
 
 }

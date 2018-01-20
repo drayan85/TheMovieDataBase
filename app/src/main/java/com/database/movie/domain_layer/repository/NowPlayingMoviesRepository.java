@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import io.reactivex.Observable;
  */
 public interface NowPlayingMoviesRepository {
 
-    Observable getNowPlayingMovies(int current_page, int per_page, boolean isInternetAvailable);
+    Observable<PaginatedMovies> getNowPlayingMovies(int current_page, int per_page, boolean isInternetAvailable);
 
-    Observable saveNowPlayingMovies(PaginatedMovies paginatedMovies);
+    Observable<Boolean> saveNowPlayingMovies(PaginatedMovies paginatedMovies);
 }

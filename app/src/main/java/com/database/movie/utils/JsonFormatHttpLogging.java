@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.database.movie.utils;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.gson.GsonBuilder;
@@ -31,7 +32,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class JsonFormatHttpLogging implements HttpLoggingInterceptor.Logger {
 
     @Override
-    public void log(String message) {
+    public void log(@NonNull String message) {
         final String logName = "OkHttp";
         if (!message.startsWith("{") && !message.startsWith("[")) {
             Log.d(logName, message);

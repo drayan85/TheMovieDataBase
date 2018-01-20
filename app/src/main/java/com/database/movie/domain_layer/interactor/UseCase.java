@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.domain_layer.usecase;
+package com.database.movie.domain_layer.interactor;
 
 import com.database.movie.domain_layer.executor.PostExecutionThread;
 import com.database.movie.domain_layer.executor.ThreadExecutor;
@@ -37,7 +37,7 @@ import io.reactivex.schedulers.Schedulers;
  * @version 1.0.0
  * @since 15th of January 2018
  */
-public abstract class UseCase {
+public abstract class UseCase<T, Params> {
 
 
     private final ThreadExecutor mThreadExecutor;
@@ -50,12 +50,18 @@ public abstract class UseCase {
         mDisposables = new CompositeDisposable();
     }
 
+    /**
+     * Builds an {@link Observable} which will be used when executing the current {@link UseCase}.
+     */
+    public abstract Observable<T> buildUseCaseObservable(Params params);
 
-    public void execute(DisposableObserver disposableObserver, Observable observable){
-        final Observable<?> mObservable = observable
+
+    public void execute(DisposableObserver<T> observer, Params params){
+        Preconditions.checkNotNull(observer);
+        final Observable<T> observable = this.buildUseCaseObservable(params)
                 .subscribeOn(Schedulers.from(mThreadExecutor))
                 .observeOn(mPostExecutionThread.getScheduler());
-        addDisposable(mObservable.subscribeWith(disposableObserver));
+        addDisposable(observable.subscribeWith(observer));
     }
 
     /**

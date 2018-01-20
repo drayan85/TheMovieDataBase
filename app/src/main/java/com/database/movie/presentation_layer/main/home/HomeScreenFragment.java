@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,6 +126,18 @@ public class HomeScreenFragment extends NavigationFragment implements HomeScreen
 
     private void onLoadMore() {
         if(mPresenter != null){
+            //if there is not internet, check in the local table have more item,
+            // if have more item then only execute otherwise no need request
+            if (!isInternetAvailable() && mPresenter.getTotal_local_movies() <= getTotalNumberOfItemsInAdapter()) {
+                //no need to load more videos
+                return;
+            }
+            //All items are loaded check
+            if (mPresenter.getTotal_remote_movies() > 0 && mPresenter.getTotal_remote_movies() <= getTotalNumberOfItemsInAdapter()) {
+                //no need to load more videos
+                return;
+            }
+
             mPresenter.getPaginatedItems(isInternetAvailable());
         }
     }

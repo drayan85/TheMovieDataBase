@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.data_layer.source;
+package com.database.movie.data_layer.repository.now_playing.source;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import com.database.movie.data_layer.api.response.PaginatedMovies;
 
-import javax.inject.Qualifier;
+import io.reactivex.Observable;
 
 /**
  * @author Ilanthirayan Paramanathan <theebankala@gmail.com>
  * @version 1.0.0
  * @since 15th of January 2018
  */
-@Qualifier
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Remote {
+public interface NowPlayingMoviesDataSource {
+
+    /**
+     * Get an {@link Observable} which will emit a {@link PaginatedMovies}
+     *
+     * @param current_page
+     * @param per_page
+     * @return {@link Observable} <{@link PaginatedMovies}>
+     */
+    Observable<PaginatedMovies> getNowPlayingMovies(int current_page, int per_page);
+
+    Observable<Boolean> saveNowPlayingMovies(PaginatedMovies paginatedMovies);
 }

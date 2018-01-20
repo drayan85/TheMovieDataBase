@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package com.database.movie.domain_layer.executor;
 
-import com.database.movie.domain_layer.usecase.UseCase;
+import com.database.movie.domain_layer.interactor.UseCase;
 
 import java.util.concurrent.Executor;
 

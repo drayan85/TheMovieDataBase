@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.database.movie.data_layer.source.now_playing.remote;
+package com.database.movie.data_layer.repository.now_playing.source.remote;
 
 import com.database.movie.BuildConfig;
 import com.database.movie.data_layer.api.ApiServiceInterface;
 import com.database.movie.data_layer.api.response.PaginatedMovies;
-import com.database.movie.data_layer.source.now_playing.NowPlayingMoviesDataSource;
+import com.database.movie.data_layer.repository.now_playing.source.NowPlayingMoviesDataSource;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;

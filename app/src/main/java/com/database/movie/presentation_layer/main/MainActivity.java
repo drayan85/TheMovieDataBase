@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Ilanthirayan Paramanathan
+ * Copyright (c) 2018 Ilanthirayan Paramanathan Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,6 @@ import com.database.movie.R;
 import com.database.movie.databinding.HomeScreenBinding;
 import com.database.movie.databinding.NavigationDrawerBinding;
 import com.database.movie.di.components.DaggerHomeScreenComponent;
-import com.database.movie.di.modules.ActivityModule;
 import com.database.movie.di.modules.HomeScreenViewModule;
 import com.database.movie.di.modules.NowPlayingMovieModule;
 import com.database.movie.presentation_layer.main.home.HomeScreenFragment;
@@ -69,8 +68,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     HomeScreenPresenter mPresenter;
 
     public static void start(Context context) {
-        Intent starter = new Intent(context, MainActivity.class);
-        context.startActivity(starter);
+        context.startActivity(getCallingIntent(context));
+    }
+
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, MainActivity.class);
     }
 
     @Override
@@ -128,8 +130,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void resolveDaggerDependency() {
         DaggerHomeScreenComponent
                 .builder()
-                .activityModule(new ActivityModule(this))
                 .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
                 .homeScreenViewModule(new HomeScreenViewModule(mHomeFragment))
                 .nowPlayingMovieModule(new NowPlayingMovieModule())
                 .build()
@@ -180,5 +182,4 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
 }
