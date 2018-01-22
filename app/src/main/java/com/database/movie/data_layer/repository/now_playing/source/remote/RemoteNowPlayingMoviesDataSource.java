@@ -30,13 +30,13 @@ import retrofit2.Retrofit;
  */
 public class RemoteNowPlayingMoviesDataSource implements NowPlayingMoviesDataSource {
 
-    private Retrofit mRetrofit;
+    private ApiServiceInterface mApiServiceInterface;
 
     //prevent direct instantiation.
     private RemoteNowPlayingMoviesDataSource() {}
 
-    public RemoteNowPlayingMoviesDataSource(Retrofit retrofit) {
-        this.mRetrofit = retrofit;
+    public RemoteNowPlayingMoviesDataSource(ApiServiceInterface apiServiceInterface) {
+        this.mApiServiceInterface = apiServiceInterface;
     }
 
 
@@ -48,12 +48,12 @@ public class RemoteNowPlayingMoviesDataSource implements NowPlayingMoviesDataSou
      * @return {@link Observable}<{@link PaginatedMovies}>
      */
     @Override
-    public Observable getNowPlayingMovies(int current_page, int per_page) {
-        return mRetrofit.create(ApiServiceInterface.class).getNowPlayingMovies(BuildConfig.API_KEY, "en-US", current_page);
+    public Observable<PaginatedMovies> getNowPlayingMovies(int current_page, int per_page) {
+        return mApiServiceInterface.getNowPlayingMovies(BuildConfig.API_KEY, "en-US", current_page);
     }
 
     @Override
-    public Observable saveNowPlayingMovies(PaginatedMovies paginatedMovies) {
+    public Observable<Boolean> saveNowPlayingMovies(PaginatedMovies paginatedMovies) {
         return Observable.just(false);
     }
 }
