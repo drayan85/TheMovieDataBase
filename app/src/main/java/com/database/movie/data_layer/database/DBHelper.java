@@ -20,6 +20,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.database.movie.Extras;
 import com.database.movie.data_layer.database.entity.IMovie;
 import com.database.movie.data_layer.database.entity.INowPlayingMovie;
 
@@ -33,12 +34,11 @@ import javax.inject.Singleton;
 @Singleton
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "the_movie_database.db";
     private static final int DB_VERSION = 2;
     private static final String TAG = DBHelper.class.getSimpleName();
 
     public DBHelper(Context context){
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, Extras.DB_NAME, null, DB_VERSION);
     }
 
     @Override

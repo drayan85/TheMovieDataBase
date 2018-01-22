@@ -15,6 +15,7 @@
  */
 package com.database.movie.di.modules;
 
+import com.database.movie.data_layer.api.ApiServiceInterface;
 import com.database.movie.data_layer.database.DataBaseManager;
 import com.database.movie.data_layer.repository.Local;
 import com.database.movie.data_layer.repository.Remote;
@@ -53,7 +54,7 @@ public class NowPlayingMovieModule {
     @Provides
     @Remote
     NowPlayingMoviesDataSource provideRemoteNowPlayingMoviesDataSource(@Named("TheMovieDBRetrofit")Retrofit retrofit){
-        return new RemoteNowPlayingMoviesDataSource(retrofit);
+        return new RemoteNowPlayingMoviesDataSource(retrofit.create(ApiServiceInterface.class));
     }
 
     @PerActivity

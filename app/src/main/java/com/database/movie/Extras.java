@@ -24,4 +24,5 @@ package com.database.movie;
  */
 public interface Extras {
 
+    String DB_NAME = "the_movie_database.db";
 }
